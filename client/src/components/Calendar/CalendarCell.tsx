@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import type { CalendarDay, Task, Holiday } from '../../types';
 import { TaskCard } from '../Task/TaskCard';
 import { TaskForm } from '../Task/TaskForm';
+import { TaskModal } from '../Modal/TaskModal';
 import { HolidayBadge } from '../Holiday/HolidayBadge';
 
 interface Props {
@@ -76,14 +77,14 @@ const DayNum = styled.span<{ $today: boolean }>`
 
 const AddBtn = styled.button`
   font-size: 16px;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: ${({ theme }) => theme.radius.full};
   color: ${({ theme }) => theme.colors.textMuted};
-  opacity: 0;
+  opacity: 0.7;
   transition: all ${({ theme }) => theme.transition};
 
   ${Cell}:hover & { opacity: 1; }
@@ -92,6 +93,10 @@ const AddBtn = styled.button`
     background: ${({ theme }) => theme.colors.surfaceActive};
     color: ${({ theme }) => theme.colors.accent};
   }
+
+  @media (max-width: 768px) {
+    opacity: 1;
+  }
 `;
 
 const Content = styled.div`
@@ -99,9 +104,11 @@ const Content = styled.div`
   flex-direction: column;
   gap: 2px;
   padding: 0 4px 4px;
+  overflow-x: hidden;
   overflow-y: auto;
   flex: 1;
   min-height: 0;
+  min-width: 0;
 `;
 
 export function CalendarCell({
@@ -162,30 +169,40 @@ export function CalendarCell({
         ))}
 
         <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-          {sortedTasks.map((task) =>
-            editingTask?._id === task._id ? (
-              <TaskForm
-                key={task._id}
-                task={task}
-                onSave={handleUpdate}
-                onCancel={() => setEditingTask(null)}
-              />
-            ) : (
-              <TaskCard
-                key={task._id}
-                task={task}
-                searchQuery={searchQuery}
-                onEdit={setEditingTask}
-                onDelete={onDeleteTask}
-              />
-            ),
-          )}
+          {sortedTasks.map((task) => (
+            <TaskCard
+              key={task._id}
+              task={task}
+              searchQuery={searchQuery}
+              onEdit={setEditingTask}
+              onDelete={onDeleteTask}
+            />
+          ))}
         </SortableContext>
-
-        {isAdding && (
-          <TaskForm onSave={handleCreate} onCancel={() => setIsAdding(false)} />
-        )}
       </Content>
+
+      <TaskModal
+        isOpen={isAdding || !!editingTask}
+        onClose={() => {
+          setIsAdding(false);
+          setEditingTask(null);
+        }}
+      >
+        <TaskForm
+          task={editingTask ?? undefined}
+          onSave={(title, color) => {
+            if (editingTask) {
+              handleUpdate(title, color);
+            } else {
+              handleCreate(title, color);
+            }
+          }}
+          onCancel={() => {
+            setIsAdding(false);
+            setEditingTask(null);
+          }}
+        />
+      </TaskModal>
     </Cell>
   );
 }
