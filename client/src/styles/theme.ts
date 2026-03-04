@@ -1,0 +1,46 @@
+export const theme = {
+  colors: {
+    bg: '#f1f5f9',
+    surface: '#ffffff',
+    surfaceHover: '#f8fafc',
+    surfaceActive: '#f1f5f9',
+    border: '#e2e8f0',
+    borderLight: '#f1f5f9',
+    textPrimary: '#0f172a',
+    textSecondary: '#475569',
+    textMuted: '#94a3b8',
+    accent: '#2563eb',
+    accentHover: '#1d4ed8',
+    accentLight: '#dbeafe',
+    accentSoft: '#eff6ff',
+    holiday: '#d97706',
+    holidayBg: '#fffbeb',
+    holidayBorder: '#fde68a',
+    danger: '#ef4444',
+    dangerHover: '#dc2626',
+    success: '#22c55e',
+    white: '#ffffff',
+    overlay: 'rgba(0,0,0,0.04)',
+    dragOverlay: 'rgba(37,99,235,0.06)',
+  },
+  radius: {
+    sm: '6px',
+    md: '8px',
+    lg: '12px',
+    xl: '16px',
+    full: '9999px',
+  },
+  shadow: {
+    sm: '0 1px 2px rgba(0,0,0,0.05)',
+    md: '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)',
+    lg: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)',
+    xl: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)',
+    drag: '0 12px 24px -4px rgba(0,0,0,0.15), 0 4px 8px -2px rgba(0,0,0,0.1)',
+  },
+  transition: '0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+  font: {
+    sans: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+  },
+} as const;
+
+export type Theme = typeof theme;
